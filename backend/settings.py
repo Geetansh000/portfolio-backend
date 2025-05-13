@@ -42,6 +42,8 @@ CORS_ALLOW_HEADERS =['Accept','Content-Type']# "access-control-allow-origin"
 CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins (you can restrict later if needed)
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",  # Allow the frontend Angular app
+    "portfolio-backend-cue6.onrender.com",
+    "*",
 ]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = [
