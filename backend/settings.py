@@ -76,10 +76,10 @@ TEMPLATES = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'portfolio',
-        'USER': 'postgres',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
+        'NAME': 'portfolio_fdwn',
+        'USER': 'sharma',
+        'PASSWORD': 'loZPYr35m6hekbcd21nXMom4RorgTG9K',
+        'HOST': 'dpg-d0hh6sh5pdvs73egm4k0-a',#'localhost',
         'PORT': '5432',
     }
 }
