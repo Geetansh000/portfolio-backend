@@ -43,6 +43,10 @@ CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins (you can restrict later if ne
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",  # if needed for local dev
     "https://portfolio-backend-cue6.onrender.com",
+]
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
     "portfolio-backend-cue6.onrender.com",
 ]
 CORS_ALLOW_CREDENTIALS = True
