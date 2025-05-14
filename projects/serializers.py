@@ -5,6 +5,21 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = '__all__'
+    
+class ProjectSummarySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = [
+            'id',
+            'slug',
+            'title',
+            'short_description',
+            'type',
+            'color',
+            'role',
+            'icon',
+            'created_at',
+        ]
 
 def create(self, validated_data):
     if 'title' in validated_data and not validated_data.get('slug'):

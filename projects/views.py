@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from .models import Project
-from .serializers import ProjectSerializer
+from .serializers import ProjectSerializer, ProjectSummarySerializer
 import json
 from django.http import JsonResponse
 
@@ -43,7 +43,7 @@ def project_get_view(request):
         )
         if projects.count() == 0:
             return JsonResponse({'error': 'No projects found'}, status=404)
-        serializer = ProjectSerializer(projects, many=True)
+        serializer = ProjectSummarySerializer(projects, many=True)
         return JsonResponse(serializer.data, safe=False)
     if request.method == 'POST':
         return createProject(request)
