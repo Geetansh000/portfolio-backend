@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'contact',
     'portfolio_api',
     'projects',
+    'analytics',
 ]
 
 # Middleware
@@ -82,10 +83,10 @@ TEMPLATES = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'portfolio_fdwn',
-        'USER': 'sharma',
-        'PASSWORD': 'loZPYr35m6hekbcd21nXMom4RorgTG9K',
-        'HOST': 'dpg-d0hh6sh5pdvs73egm4k0-a',#'localhost',
+        'NAME': 'portfolio',
+        'USER': 'postgres',
+        'PASSWORD': 'root',
+        'HOST': 'localhost',#'dpg-d0hh6sh5pdvs73egm4k0-a',#'localhost',
         'PORT': '5432',
     }
 }
