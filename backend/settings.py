@@ -83,10 +83,10 @@ TEMPLATES = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'portfolio_4xrq',
-        'USER': 'portfolio_4xrq_user',
-        'PASSWORD': '3T0QGlUt17FT1UsI4XPXdRyBkv74EKlQ',
-        'HOST': 'dpg-d1q7nqnfte5s73d1o1g0-a',#'localhost',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'sharma',
+        'HOST': 'db.flopfkrxftgjgfpfsesk.supabase.co',#'localhost',
         'PORT': '5432',
     }
 }
