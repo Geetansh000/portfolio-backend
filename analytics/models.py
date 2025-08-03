@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+
 class Visitor(models.Model):
     ip_address = models.GenericIPAddressField(unique=True)
     visit_count = models.PositiveIntegerField(default=1)

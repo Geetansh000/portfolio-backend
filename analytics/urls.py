@@ -1,6 +1,7 @@
-from django.urls import path
-from .views import track_visit,get_stats
-urlpatterns = [
-    path('add/', track_visit, name='track-visit'),
-    path('stats/', get_stats, name='get-stats'),
-]
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import VisitorViewSet
+
+router = DefaultRouter()
+router.register('', VisitorViewSet, basename='')
+urlpatterns = [path('', include(router.urls))]

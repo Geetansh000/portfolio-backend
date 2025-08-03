@@ -1,26 +1,5 @@
-# Core Django
-Django>=4.2,<5.0
-
-# Database driver (PostgreSQL is used by default on Render)
-psycopg2-binary>=2.9
-
-# Gunicorn as WSGI HTTP server (required by Render)
-gunicorn>=21.2.0
-
-# For handling CORS (optional but common)
-django-cors-headers>=4.3.1
-
-# For managing environment variables
-python-dotenv>=1.0.0
-
-# Whitenoise for static files handling in production
-whitenoise>=6.6.0
-
-# Pillow if you're handling image uploads
-Pillow>=10.2.0
-
-# Optional: Django REST framework (for API projects)
-djangorestframework>=3.14.0
-
-# Optional: For environment-based settings
-dj-database-url>=2.1.0
+django
+psycopg2-binary
+python-dotenv
+djangorestframework
+djangorestframework-simplejwt

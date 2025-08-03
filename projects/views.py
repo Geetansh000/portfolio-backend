@@ -1,58 +1,32 @@
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
+from rest_framework import viewsets
+from rest_framework.permissions import AllowAny, IsAdminUser
 from .models import Project
-from .serializers import ProjectSerializer, ProjectSummarySerializer
-import json
-from django.http import JsonResponse
+from .serializers import (
+    ProjectDetailSerializer,
+    ProjectListSerializer,
+    ProjectCreateSerializer,
+)
 
-def createSlug(title):
-    import re
-    title = title.lower()
-    slug = re.sub(r'\W+', '_', title)
-    slug = re.sub(r'_+', '_', slug).strip('_')
-    return slug
-# Create your views here.
-def createProject(request):
-    try:
-        # Parse JSON body from the request
-        data = json.loads(request.body)
-    except json.JSONDecodeError:
-        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+class ProjectViewSet(viewsets.ModelViewSet):
+    queryset = Project.objects.all()
+    lookup_field = 'slug'
 
-    data['slug'] = createSlug(data['title'])
-    # Validate and save data using ContactSerializer
-    serializer = ProjectSerializer(data=data)
-    if serializer.is_valid():
-        serializer.save()
-        return JsonResponse(serializer.data, status=201)
-    return JsonResponse(serializer.errors, status=400)
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        elif self.request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
+            return [IsAdminUser()]
+        return []  # Default: disallow other methods
 
-@csrf_exempt
-def project_get_view(request):
-    if request.method == 'GET':
-        projects = Project.objects.values(
-            'id',
-            'slug',
-            'title',
-            'short_description',
-            'type',
-            'color',
-            'role',
-            'icon',
-            'created_at',
-        )
-        if projects.count() == 0:
-            return JsonResponse({'error': 'No projects found'}, status=404)
-        serializer = ProjectSummarySerializer(projects, many=True)
-        return JsonResponse(serializer.data, safe=False)
-    if request.method == 'POST':
-        return createProject(request)
+    def get_serializer_class(self):
+        match self.action:
+            case 'list':
+                return ProjectListSerializer
+            case 'create' | 'update' | 'partial_update':
+                return ProjectCreateSerializer
+            case _:
+                return ProjectDetailSerializer
 
-    return JsonResponse({'error': 'Method not allowed'}, status=405)
-
-def project_get_detail_view(request, slug):
-    if request.method == 'GET':
-        project = Project.objects.get(slug=slug)
-        serializer = ProjectSerializer(project)
-        return JsonResponse(serializer.data, safe=False)
-    return JsonResponse({'error': 'Method not allowed'}, status=405)
+    def update(self, request, *args, **kwargs):
+        kwargs['partial'] = True  # Allow partial updates via PUT
+        return super().update(request, *args, **kwargs)
