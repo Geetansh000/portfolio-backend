@@ -27,8 +27,9 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = [host.strip()
-                 for host in os.getenv('ALLOWED_HOSTS', '').split(',')]
+ALLOWED_HOSTS = [
+    host.strip() for host in os.getenv('ALLOWED_HOSTS', '').split(',') if host.strip()
+]
 
 # Application definition
 
@@ -67,12 +68,18 @@ CORS_ALLOW_HEADERS = ['Accept', 'Content-Type']
 
 # Allow all origins (you can restrict later if needed)
 CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = [host.strip()
-                        for host in os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')]
+CORS_ALLOWED_ORIGINS = [
+    host.strip()
+    for host in os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')
+    if host.strip()
+]
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_METHODS = [host.strip()
-                      for host in os.getenv('CORS_ALLOW_METHODS', '').split(',')]
+CORS_ALLOW_METHODS = [
+    method.strip()
+    for method in os.getenv('CORS_ALLOW_METHODS', '').split(',')
+    if method.strip()
+]
 # URL configuration
 ROOT_URLCONF = 'backend.urls'
 
@@ -106,8 +113,33 @@ DATABASES = {
         'PASSWORD': os.getenv('DATABASE_PASSWORD', ''),
         'HOST': os.getenv('DATABASE_HOST', ''),
         'PORT': os.getenv('DATABASE_PORT', ''),
+        'CONN_MAX_AGE': int(os.getenv('DB_CONN_MAX_AGE', '60')),
+        'CONN_HEALTH_CHECKS': True,
     }
 }
+
+REDIS_URL = os.getenv('REDIS_URL', '').strip()
+if REDIS_URL:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django_redis.cache.RedisCache',
+            'LOCATION': REDIS_URL,
+            'OPTIONS': {
+                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+                'IGNORE_EXCEPTIONS': True,
+            },
+            'TIMEOUT': int(os.getenv('CACHE_TIMEOUT', '300')),
+            'KEY_PREFIX': os.getenv('CACHE_KEY_PREFIX', 'portfolio_backend'),
+        }
+    }
+else:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': 'portfolio-backend-local-cache',
+            'TIMEOUT': int(os.getenv('CACHE_TIMEOUT', '300')),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -153,5 +185,8 @@ SIMPLE_JWT = {
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
 }
